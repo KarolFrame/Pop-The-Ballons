@@ -1,25 +1,31 @@
-// we declare a new global variable containing an array that represents the ballons map
-// you have to add more colors into the ballonsMap array
-let ballonsMap = ['green'];
+let ballonsMap = ['green', 'red', 'blue', 'yellow', 'purple', 'orange', 'pink', 'brown', 'black', 'white', 'cyan', 'magenta', 'gray', 'lime', 'teal', 'violet', 'indigo', 'beige', 'maroon', 'gold'];
 
-// poping a balloon is basically turning his color to null (no color)
 const popBalloon = (position) => {
-    // set the color to null on the balloon position
-    render();
+    //le pone el color null al blobo clicado
+    ballonsMap[position] = null;
+    render(); //actualiza los globos
 }
 
 const render = () => {
-    
-    // convert ballons map of colors into real html balloons
+    //convierte la array en globos
     const ballons = ballonsMap.map((color, position) => {
-        return `<div class="balloon active"></div>`; // <--- render each balloon
+        if (color) {
+            return `<div class="balloon" style="background-color: ${color};" data-position="${position}" onclick="popBalloon(${position})"></div>`;
+        } else {
+            return `<div class="balloon popped" data-position="${position}" onclick="popBalloon(${position})"></div>`; //los globos explotados son transparentesgit 
+        }
     });
 
-    document.querySelector("#balloon-count").innerHTML = ballons.filter(b => b !== null).length; // <-- render the balloon count into the DOM
-    document.querySelector("#balloon-map").innerHTML = ballons.join(''); // <-- render the balloons into the DOM
+    //actualiza el numero de gobos
+    document.querySelector("#balloon-count").innerHTML = ballonsMap.filter(b => b !== null).length;
 
-    if(activeBalloons == 0) window.location.reload(); // <--- reload website when no more balloons are left
+    //renderiza los globos que hay
+    document.querySelector("#balloon-map").innerHTML = ballons.join('');
+
+    //recarga la pag cuando ya no quedan globos
+    if (ballonsMap.filter(b => b !== null).length === 0) {
+        window.location.reload();
+    }
 }
 
-// this makes the "render" function trigger when the website starts existing
-window.onload = render();
+window.onload = render(); //renderiza los globos al iniciar la pag
